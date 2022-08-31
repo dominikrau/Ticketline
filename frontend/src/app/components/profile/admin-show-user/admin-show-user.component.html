@@ -1,0 +1,59 @@
+<div class="user-card rounded">
+  <div class="row">
+    <div class="col col-md-9" *ngIf="user">
+        <div class="row no-gutters">
+          <div class="col-md-9">
+            <div class="card-body">
+              <p class="card-text" *ngIf="isUserAdmin(user)">User is Admin</p>
+              <p class="card-text" *ngIf="user.blocked">User is currently blocked</p>
+              <p class="card-text">Email: {{user.emailAddress}} </p>
+              <p class="card-text">Date of birth: {{user.dateOfBirth}}</p>
+              <p class="card-text">Gender: {{getGender()}} </p>
+              <p class="card-text">Country: {{user.address.country}} </p>
+              <p class="card-text">Address: {{user.address.street}} {{user.address.postalCode}} {{user.address.city}} {{user.address.additional}}</p>
+              <div *ngIf="user.blocked">
+                <button class="btn btn-primary btn-block mb-4" (click)="unblockUser(user.userId)">Unblock</button>
+              </div>
+              <div *ngIf="!user.blocked && !isUserAdmin(user)">
+                <button class="btn btn-primary btn-block mb-4" (click)="blockUser(user.userId)">Block</button>
+              </div>
+              <div *ngIf="!user.blocked && !isUserAdmin(user)">
+                <button class="btn btn-primary btn-block mb-4" (click)="makeUserAdmin(user.userId)">Give Admin Rights</button>
+              </div>
+
+                <div class="form-group">
+                  <form class="form" *ngIf="passwordForm" [formGroup]="passwordForm" (ngSubmit)="resetPasswordForUser(user.userId)">
+                    <div class="form-group">
+                      <label for="inputNewPassword">New Password</label>
+                      <input type="password" name="newPassword" formControlName="newPassword" class="form-control"
+                             [class.is-invalid]="isInvalid('passwordForm','newPassword')"
+                             id="inputNewPassword" placeholder="Enter New Password">
+                      <div *ngIf="isInvalid('passwordForm','newPassword')" class="invalid-feedback">
+                        <div *ngIf="passwordForm.controls.newPassword.errors.required">This field is required!</div>
+                        <div *ngIf="passwordForm.controls.newPassword.errors.minlength">Your password must be at least 8 characters long!</div>
+                        <div *ngIf="passwordForm.controls.newPassword.errors.pattern">Password has to contain at least one number and one letter!</div>
+                      </div>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="inputConfirmPassword">Confirm Password</label>
+                      <input type="password" name="newPassword" formControlName="confirmPassword" class="form-control"
+                             [class.is-invalid]="isInvalid('passwordForm','confirmPassword')"
+                             id="inputConfirmPassword" placeholder="Confirm Password">
+                      <div *ngIf="isInvalid('passwordForm','confirmPassword')" class="invalid-feedback">
+                        <div *ngIf="passwordForm.controls.confirmPassword.errors.required">This field is required!</div>
+                        <div *ngIf="passwordForm.controls.confirmPassword.errors.minlength">Your password must be at least 8 characters long!</div>
+                        <div *ngIf="passwordForm.controls.confirmPassword.errors.pattern">Password has to contain at least one number and one letter!</div>
+                        <div *ngIf="f.confirmPassword.errors.mustMatch">Passwords must match</div>
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block mb-4">Reset password</button>
+                  </form>
+
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>

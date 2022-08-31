@@ -1,0 +1,7 @@
+<nav class="nav flex-row my-3 border" *ngIf="show">
+  <a class="nav-link flex-grow-1 text-center border-right" *ngIf="!isBuyingReservedTickets()"
+     [routerLink]="getCheckoutUrl()" routerLinkActive="btn-primary"
+     [class.disabled]="isDisabled('/')" [routerLinkActiveOptions]="{exact:true}">Select Seats</a>
+  <a class="nav-link flex-grow-1 text-center border-right" [routerLink]="getCheckoutUrl() + '/payment'" routerLinkActive="btn-primary" [class.disabled]="isDisabled('/payment')">Payment and Shipping</a>
+  <a class="nav-link flex-grow-1 text-center" [routerLink]="getCheckoutUrl() + '/confirm'" routerLinkActive="btn-primary" [class.disabled]="isDisabled('/confirm')">Confirm Order</a>
+</nav>

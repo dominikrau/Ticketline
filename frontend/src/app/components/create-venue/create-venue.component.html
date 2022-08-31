@@ -1,0 +1,22 @@
+<h1 class = "mt-5"> Create Venue</h1>
+
+<form *ngIf="venueCreationForm" class="form" [formGroup]="venueCreationForm" (ngSubmit)="addVenue()">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="form-group">
+        <label for="inputName">Name of the Venue</label>
+        <input type="text" name="name" formControlName="name" class="form-control"
+               [class.is-invalid]="isInvalid('venueCreationForm', 'name')"
+               id="inputName" placeholder="Enter Name of Venue">
+        <div *ngIf="isInvalid('venueCreationForm', 'name')" class="invalid-feedback">
+          <div *ngIf="venueCreationForm.controls.name.errors.required">This field is required!</div>
+        </div>
+      </div>
+
+        <h3>Address</h3>
+        <app-address-fields [formGroup]="venueCreationForm" [groupName]="'address'"></app-address-fields>
+    </div>
+  </div>
+
+  <button type="button" (click)="addVenue()" class="btn btn-success">Submit</button>
+</form>

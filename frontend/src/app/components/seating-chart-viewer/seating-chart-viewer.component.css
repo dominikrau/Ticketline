@@ -1,0 +1,37 @@
+svg {
+    width: 100%;
+    height: auto;
+    max-width: 660px;
+    object-fit: contain;
+    background: #ffffff;
+    display: block;
+    cursor: pointer;
+    margin: auto;
+    user-select: none;
+    border-color: #ccc;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+}
+
+#stage text {
+    font: bold 1px sans-serif;
+    fill: #000;
+    text-anchor: middle;
+    dominant-baseline: middle;
+}
+#stage rect {
+    stroke: #000;
+}
+use.selected {
+    stroke-width: 0.1;
+    stroke: #fff;
+}
+use.unavailable {
+    filter: url("#greyscale");
+}
+#seat rect {
+    stroke-width: 0;
+}
+#seat path {
+    stroke-width: 0;
+}

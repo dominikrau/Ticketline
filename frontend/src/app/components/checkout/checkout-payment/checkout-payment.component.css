@@ -1,0 +1,6 @@
+.selected {
+    background-color: aliceblue;
+}
+.card > div:last-child {
+    border-bottom: none !important;
+}

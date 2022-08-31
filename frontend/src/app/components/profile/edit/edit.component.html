@@ -1,0 +1,168 @@
+<h1 class="h2 my-4">Edit Profile</h1>
+<app-loading-spinner *ngIf="!editUserForm" text="user details"></app-loading-spinner>
+<div *ngIf="editUserForm">
+  <form class="form my-4" [formGroup]="editUserForm" (ngSubmit)="editUserProfile()">
+    <div class="row">
+      <div class="col-md-6">
+        <h2 class="h3">General Information</h2>
+        <div class="form-group">
+          <label for="inputFirstName">First Name</label>
+          <input type="text" name="firstName" formControlName="firstName" class="form-control"
+                 [class.is-invalid]="isInvalid('editUserForm','firstName')"
+                 id="inputFirstName" placeholder="Enter First Name">
+          <div *ngIf="isInvalid('editUserForm','firstName')" class="invalid-feedback">
+            <div *ngIf="editUserForm.controls.firstName.errors.required">This field is required!</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="inputLastName">Last Name</label>
+          <input type="text" name="lastName" formControlName="lastName" class="form-control"
+                 [class.is-invalid]="isInvalid('editUserForm','lastName')"
+                 id="inputLastName" placeholder="Enter Last Name">
+          <div *ngIf="isInvalid('editUserForm','lastName')" class="invalid-feedback">
+            <div *ngIf="editUserForm.controls.lastName.errors.required">This field is required!</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="inputGender">Gender</label>
+          <select name="gender" formControlName="gender" class="form-control" id="inputGender">
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+            <option value="O">Other</option>
+          </select>
+          <div *ngIf="isInvalid('editUserForm','gender')" class="invalid-feedback">
+            <div *ngIf="editUserForm.controls.gender.errors.required">This field is required!</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="inputEmailAddress">Email Address</label>
+          <input type="text" name="emailAddress" formControlName="emailAddress" class="form-control"
+                 [class.is-invalid]="isInvalid('editUserForm','emailAddress')"
+                 id="inputEmailAddress" placeholder="Enter Email Address">
+          <div *ngIf="isInvalid('editUserForm','emailAddress')" class="invalid-feedback">
+            <div *ngIf="editUserForm.controls.emailAddress.errors.required">This field is required!</div>
+            <div *ngIf="editUserForm.controls.emailAddress.errors.email||editUserForm.controls.emailAddress.errors.pattern">Please provide a
+              valid Email Address!
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="inputDateOfBirth">Date of Birth</label>
+          <div class="input-group">
+            <div class="input-group-prepend cursor-pointer" (click)="dateOfBirth.toggle()">
+              <div class="input-group-text" id="inputGroupPrepend3">
+                <svg class="bi bi-calendar" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
+                     xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd"
+                        d="M14 0H2a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"
+                        clip-rule="evenodd"/>
+                  <path fill-rule="evenodd"
+                        d="M6.5 7a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm-9 3a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm-9 3a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2z"
+                        clip-rule="evenodd"/>
+                </svg>
+              </div>
+            </div>
+            <input type="text"
+                   ngbDatepicker #dateOfBirth="ngbDatepicker" [maxDate]="getMinAge()" [minDate]="{year: 1900, month: 1, day: 1}"
+                   name="dateOfBirth" formControlName="dateOfBirth" class="form-control"
+                   [class.is-invalid]="isInvalid('editUserForm','dateOfBirth')"
+                   id="inputDateOfBirth" placeholder="DD.MM.YYYY" autocomplete="off">
+            <div *ngIf="isInvalid('editUserForm','dateOfBirth')" class="invalid-feedback">
+              <div *ngIf="editUserForm.controls.dateOfBirth.errors.required">This field is required!</div>
+              <div *ngIf="editUserForm.controls.dateOfBirth.errors.ngbDate?.minDate">You cannot possibly be that old!</div>
+              <div *ngIf="editUserForm.controls.dateOfBirth.errors.ngbDate?.maxDate">You are too young!</div>
+              <div *ngIf="editUserForm.controls.dateOfBirth.errors.ngbDate?.invalid">The date is invalid!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h2 class="h3">Address</h2>
+        <app-address-fields [formGroup]="editUserForm" [groupName]="'address'"></app-address-fields>
+      </div>
+    </div>
+
+
+    <button type="button" (click)="editUserProfile()" class="btn btn-success">Update Profile</button>
+
+
+  </form>
+
+  <h2>Update Password</h2>
+  <form *ngIf="updatePasswordForm" class="form my-3" [formGroup]="updatePasswordForm" (ngSubmit)="editUserProfile()">
+
+    <div class="form-group">
+      <label for="inputCurrentPassword">Current Password</label>
+      <input type="password" name="currentPassword" formControlName="currentPassword" class="form-control"
+             [class.is-invalid]="isInvalid('updatePasswordForm','currentPassword')"
+             id="inputCurrentPassword" placeholder="Enter Current Password">
+      <div *ngIf="isInvalid('updatePasswordForm','currentPassword')" class="invalid-feedback">
+        <div *ngIf="updatePasswordForm.controls.currentPassword.errors.required">This field is required!</div>
+        <div *ngIf="updatePasswordForm.controls.currentPassword.errors.minlength">Your password must be at least 8 characters long!</div>
+        <div *ngIf="updatePasswordForm.controls.currentPassword.errors.pattern">Password has to contain at least one number and one
+          letter!
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="inputNewPassword">New Password</label>
+      <input type="password" name="newPassword" formControlName="newPassword" class="form-control"
+             [class.is-invalid]="isInvalid('updatePasswordForm','newPassword')"
+             id="inputNewPassword" placeholder="Enter New Password">
+      <div *ngIf="isInvalid('updatePasswordForm','newPassword')" class="invalid-feedback">
+        <div *ngIf="updatePasswordForm.controls.newPassword.errors.required">This field is required!</div>
+        <div *ngIf="updatePasswordForm.controls.newPassword.errors.minlength">Your password must be at least 8 characters long!</div>
+        <div *ngIf="updatePasswordForm.controls.newPassword.errors.pattern">Password has to contain at least one number and one letter!
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="inputConfirmNewPassword">Confirm New Password</label>
+      <input type="password" name="newPassword" formControlName="confirmPassword" class="form-control"
+             [class.is-invalid]="isInvalid('updatePasswordForm','confirmPassword')"
+             id="inputConfirmNewPassword" placeholder="Confirm New Password">
+      <div *ngIf="isInvalid('updatePasswordForm','confirmPassword')" class="invalid-feedback">
+        <div *ngIf="updatePasswordForm.controls.confirmPassword.errors.required">This field is required!</div>
+        <div *ngIf="updatePasswordForm.controls.confirmPassword.errors.minlength">Your password must be at least 8 characters long!</div>
+        <div *ngIf="updatePasswordForm.controls.confirmPassword.errors.pattern">Password has to contain at least one number and one
+          letter!
+        </div>
+        <div *ngIf="f.confirmPassword.errors.mustMatch">Passwords must match</div>
+      </div>
+    </div>
+    <button type="button" (click)="updatePassword()" class="btn btn-success">Update Password</button>
+  </form>
+
+
+  <h2>Delete Account</h2>
+  <div>
+    <label>Please note that accounts with tickets for future events cannot be deleted. In this case you need to cancel your tickets
+      first.</label>
+  </div>
+  <div class="row p-2 mb-4">
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target=".create-message-modal">Delete your account</button>
+
+    <div class="modal fade create-message-modal" tabindex="-1" role="dialog" aria-labelledby="Create message modal" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Account deletion</h5>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to cancel your account? This process cannot be reversed.
+          </div>
+          <div class="modal-footer">
+            <button type="button" (click)="deleteAccount()" class="btn btn-danger">Yes, delete account</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" #closebutton>Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+.card:hover {
+    cursor: pointer;
+}
+.event-type-badge {
+    left: 0;
+}
+
+.card-img {
+    height: 100%;
+    object-fit: cover;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}

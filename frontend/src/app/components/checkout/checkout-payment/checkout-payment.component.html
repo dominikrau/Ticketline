@@ -1,0 +1,32 @@
+<h1 class="h2 my-4">Payment Information</h1>
+
+<app-checkout-navigation></app-checkout-navigation>
+<ng-container *ngIf="show && paymentForm">
+
+  <div class="row">
+    <div class="col-md-6">
+      <form class="form" [formGroup]="paymentForm" (ngSubmit)="continueToConfirmation()">
+        <div formGroupName="payment" class="card" [class.is-invalid]="isInvalid()">
+          <div class="d-flex align-items-center border-bottom" *ngFor="let provider of paymentProviders"
+               [class.selected]="paymentForm.value['payment'].method === provider.value"
+               [class.is-invalid]="paymentForm.get('payment')['controls'].method.errors">
+            <div class="flex-shrink-0 p-2">
+              <input type="radio" [id]="provider.value" [value]="provider.value" formControlName="method" aria-label="payment method">
+            </div>
+            <label class="form-check-label flex-grow-1" [for]="provider.value">
+              {{provider.name}}
+              <span class="d-block text-muted">{{provider.description}}</span>
+            </label>
+          </div>
+        </div>
+        <div *ngIf="isInvalid()" class="invalid-feedback">
+          <div *ngIf="paymentForm.get('payment')['controls'].method.errors.required">Please select a payment method!</div>
+        </div>
+        <button class="btn btn-primary btn-block my-3">continue</button>
+      </form>
+    </div>
+    <div class="col-md-6">
+      <app-checkout-overview></app-checkout-overview>
+    </div>
+  </div>
+</ng-container>

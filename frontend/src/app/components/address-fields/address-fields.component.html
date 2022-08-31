@@ -1,0 +1,58 @@
+<div [formGroup]="formGroup">
+
+  <div [formGroupName]="groupName">
+
+    <div class="form-group">
+      <label for="inputStreet">Street and House Number</label>
+      <input type="text" name="street" formControlName="street" class="form-control" [class.is-invalid]="isInvalid('formGroup', 'address.street')"
+             id="inputStreet" placeholder="Enter Street and House Number">
+      <div *ngIf="isInvalid('formGroup', 'address.street')" class="invalid-feedback">
+        <div *ngIf="formGroup.get('address.street').errors.required">This field is required!</div>
+      </div>
+    </div>
+
+    <div class="form-row">
+
+      <div class="form-group col-md-3">
+        <label for="inputPostalCode">Postal Code</label>
+        <input type="text" name="postalCode" formControlName="postalCode" class="form-control" [class.is-invalid]="isInvalid('formGroup', 'address.postalCode')"
+               id="inputPostalCode" placeholder="Enter Postal Code">
+        <div *ngIf="isInvalid('formGroup', 'address.postalCode')" class="invalid-feedback">
+          <div *ngIf="formGroup.get('address.postalCode').errors.required">This field is required!</div>
+        </div>
+      </div>
+
+      <div class="form-group col-md-4">
+        <label for="inputCity">City</label>
+        <input type="text" name="city" formControlName="city" class="form-control" [class.is-invalid]="isInvalid('formGroup', 'address.city')"
+               id="inputCity" placeholder="Enter City">
+        <div *ngIf="isInvalid('formGroup', 'address.city')" class="invalid-feedback">
+          <div *ngIf="formGroup.get('address.city').errors.required">This field is required!</div>
+        </div>
+      </div>
+
+      <div class="form-group col-md-5">
+        <label for="inputAdditional">Additional</label>
+        <input type="text" name="additional" formControlName="additional" class="form-control"
+               [class.is-invalid]="isInvalid('formGroup', 'address.additional')"
+               id="inputAdditional" placeholder="Enter Additional">
+        <div *ngIf="isInvalid('formGroup', 'address.additional')" class="invalid-feedback">
+          <div *ngIf="formGroup.get('address.additional').errors.required">This field is required!</div>
+        </div>
+      </div>
+
+      <div class="form-group col-md-12">
+        <label for="inputCountry">Country</label>
+        <input type="text" name="country" formControlName="country" class="form-control"
+               [class.is-invalid]="isInvalid('formGroup', 'address.country')"
+               id="inputCountry" placeholder="Enter Country">
+        <div *ngIf="isInvalid('formGroup', 'address.country')" class="invalid-feedback">
+          <div *ngIf="formGroup.get('address.country').errors.required">This field is required!</div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,19 @@
+<h1 class="h2 text-center my-4">News</h1>
+
+<div *ngIf="message">
+  <div class="text-center">
+    <h2 class="text-center">{{message.title}}</h2>
+    <p class="font-italic">{{message.publishedAt | date}}</p>
+    <p class="lead"> {{message.summary}}</p>
+  </div>
+
+  <div class="row">
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-8">
+      <img [src]="message.imageUrl" alt="">
+      <p class="mt-2"> {{message.text}} </p>
+      <button routerLink=".." class="btn btn-secondary">back to all messages</button>
+    </div>
+  </div>
+</div>

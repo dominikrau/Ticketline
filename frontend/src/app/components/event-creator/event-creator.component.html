@@ -1,0 +1,59 @@
+<h1 class="h2 my-4">Create Event</h1>
+<div>
+  <form>
+    <form class="form" [formGroup]="eventForm" (ngSubmit)="createEvent()">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="eventName">Name of the event</label>
+            <input type="text" formControlName="name" class="form-control" id="eventName"
+                   placeholder="Name of the event" required [class.is-invalid]="isInvalid('name')">
+            <div *ngIf="isInvalid('name')" class="invalid-feedback">
+              <div *ngIf="eventForm.controls.name.errors.required">
+                This field is required!
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <!--suppress XmlInvalidId -->
+            <label for="artists">Artists</label>
+            <app-artist-select [controlName]="'artists'" [form]="eventForm" [class.is-invalid]="isInvalid('artists')"></app-artist-select>
+            <div *ngIf="isInvalid('artists')" class="invalid-feedback">
+              <div *ngIf="eventForm.controls.artists.errors.required">
+                At least one artist is required!
+              </div>
+            </div>
+          </div>
+          <app-event-type-select [formGroup]="eventForm" [controlName]="'eventType'"></app-event-type-select>
+          <label for="eventDescription">Description</label>
+          <textarea type="text" formControlName="description" class="form-control" id="eventDescription"
+                    name="eventDescription" placeholder="Description" required cols="40" rows="8" [class.is-invalid]="isInvalid('description')"></textarea>
+          <div *ngIf="isInvalid('description')" class="invalid-feedback">
+            <div *ngIf="eventForm.controls.description.errors.required">
+              At least one artist is required!
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="imageUpload" class="d-block">Upload Image</label>
+            <img class="img-fluid" *ngIf="eventForm.controls.imageUrl"
+                 [src]="eventForm.controls.imageUrl.value?eventForm.controls.imageUrl.value:'https://via.placeholder.com/800x600/ddd/fff?text=Upload%20Image'"
+                 alt="" (click)="imageUpload.click()">
+            <input type="hidden" formControlName="imageUrl">
+            <input type="file" (change)="onImageInputChanged($event)" accept="image/jpeg, image/png" class="form-control-file mt-2"
+                   id="imageUpload" #imageUpload [class.is-invalid]="isInvalid('imageUrl')">
+            <div *ngIf="isInvalid('imageUrl')" class="invalid-feedback">
+              <div *ngIf="eventForm.controls.imageUrl.errors.required">
+                An valid image is required!
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-success my-3">Save Event</button>
+    </form>
+  </form>
+
+
+</div>

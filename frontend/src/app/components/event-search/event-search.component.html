@@ -1,0 +1,107 @@
+<h1 class="h2 my-4">Search Events</h1>
+
+
+<div class="row">
+  <div class="col col-md-3">
+    <div>
+      <h5>Filter</h5>
+      <form class="form" [formGroup]="searchForm" (ngSubmit)="changePage(1)">
+        <div class="form-group">
+          <label for="inputName">Event Name</label>
+          <input type="text" name="inputName" id="inputName" formControlName="name" class="form-control"
+                 placeholder="Enter Event Name">
+        </div>
+        <div class="form-group">
+          <label for="inputDescription">Event Description</label>
+          <input type="text" name="inputDescription" id="inputDescription" formControlName="description" class="form-control"
+                 placeholder="Enter Description of the Event">
+        </div>
+        <app-event-type-select [formGroup]="searchForm" [controlName]="'eventType'"></app-event-type-select>
+        <div class="form-group">
+          <label for="inputPseudonym">Artist Pseudonym</label>
+          <input type="text" name="inputPseudonym" id="inputPseudonym" formControlName="pseudonym" class="form-control"
+                 placeholder="Enter Pseudonym of the Artist">
+        </div>
+        <div id="collapseExample" [ngbCollapse]="isCollapsed">
+          <div class="form-row">
+            <div class="form-group col-md">
+              <label for="inputFirstName">First Name</label>
+              <input type="text" name="inputName" id="inputFirstName" formControlName="firstName" class="form-control"
+                     placeholder="Enter First Name">
+            </div>
+            <div class="form-group col-md">
+              <label for="inputLastName">Last Name</label>
+              <input type="text" name="inputName" id="inputLastName" formControlName="lastName" class="form-control"
+                     placeholder="Enter Last Name">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="inputStartTime">Start Time</label>
+              <ngb-timepicker id="inputStartTime" formControlName="startTime" [spinners]="false"></ngb-timepicker>
+            </div>
+            <div class="form-group col-md-6">
+              <label for="inputEndTime">End Time</label>
+              <ngb-timepicker id="inputEndTime" formControlName="endTime" [spinners]="false"></ngb-timepicker>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputDuration">Duration</label>
+            <ngx-duration-picker id="inputDuration" [formControlName]="'duration'"
+                                 [options]="durationPickerOptions"></ngx-duration-picker>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="inputMinPrice">Min Price</label>
+              <input type="number" name="inputMinPrice" id="inputMinPrice" formControlName="minPrice" class="form-control"
+                     placeholder="Minimum Price">
+            </div>
+            <div class="form-group col-md-6">
+              <label for="inputMaxPrice">Max Price</label>
+              <input type="number" name="inputMaxPrice" id="inputMaxPrice" formControlName="maxPrice" class="form-control"
+                     placeholder="Maximum Price">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputLocation">Location</label>
+            <input type="text" name="inputLocation" id="inputLocation" formControlName="location" class="form-control"
+                   placeholder="Enter Location of the Event">
+          </div>
+          <div class="form-group">
+            <label for="inputHall">Hall</label>
+            <input type="text" name="inputHall" id="inputHall" formControlName="hall" class="form-control"
+                   placeholder="Enter Hall of the Location">
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary btn-block" (click)="isCollapsed = !isCollapsed"
+                [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+          {{isCollapsed ? "Show" : "Hide" }} Advanced Search
+        </button>
+        <button type="submit" class="btn btn-primary btn-block mb-4">Search</button>
+      </form>
+    </div>
+  </div>
+  <div class="col col-md-9">
+    <app-loading-spinner *ngIf="!results" text="Events"></app-loading-spinner>
+    <ng-container *ngIf="results">
+      <div class="card mb-3 hover-shadow" *ngFor="let event of results.content" (click)="eventDetails(event)">
+        <div class="row no-gutters">
+          <div class="col-md-3 position-relative">
+            <img [src]="event.imageUrl" class="card-img" alt="">
+            <span class="badge badge-secondary position-absolute mt-1 ml-1 event-type-badge">{{event.eventType}}</span>
+          </div>
+          <div class="col-md-9">
+            <div class="card-body">
+              <h5 class="card-title">{{event.name}}</h5>
+              <p class="card-text">{{event.description | description}}</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <ngb-pagination *ngIf="results.content.length" [page]="pageNumber" (pageChange)="changePage($event)"
+                      [collectionSize]="results.total"
+                      [pageSize]="pageSize" class="float-right" [maxSize]="5" [rotate]="true"></ngb-pagination>
+    </ng-container>
+  </div>
+</div>

@@ -1,0 +1,65 @@
+<div class="row align-items-center my-5" *ngIf="event">
+  <div class="col-md-6">
+    <h1 class="display-3">{{ event.name }}</h1>
+    <ng-container *ngFor="let artist of event.artists">
+      <h2>{{artist.pseudonym}}</h2>
+      <h3 class="text-muted" *ngIf="artist.pseudonym !== artist.firstName+' '+artist.lastName">{{artist.firstName}} {{artist.lastName}}</h3>
+    </ng-container>
+    <p class="lead">{{event.description}}</p>
+    <p>Type: <span class="badge badge-secondary">{{event.eventType}}</span></p>
+    <p>
+      <button routerLink="../.." class="btn btn-secondary">Go Back</button>
+    </p>
+  </div>
+  <div class="col-md-6">
+    <img class="img-fluid" src="{{event.imageUrl}}" alt="">
+  </div>
+</div>
+
+<app-loading-spinner *ngIf="!shows" text="shows"></app-loading-spinner>
+<div class="my-5" *ngIf="shows">
+  <ng-container *ngFor="let show of shows">
+    <div class="card mb-3">
+      <div class="row no-gutters align-items-center">
+        <div class="col-md-3 text-center">
+          <h4 class="text-primary mb-0">
+            {{show.startTime | date:'dd'}}
+            <ng-container *ngIf="(show.startTime | date:'dd') !== (show.endTime | date:'dd')"> <!--If day is different-->
+              -
+              {{show.endTime | date:'dd'}}
+            </ng-container>
+          </h4>
+          <p class="lead mb-0">
+            {{show.startTime | date:'MMMM yyyy'}}
+            <ng-container *ngIf="(show.startTime | date:'MMMM yyyy') !== (show.endTime | date:'MMMM yyyy')">
+              <!--If month or year are different-->
+              -
+              {{show.endTime | date:'MMM. yyyy'}}
+            </ng-container>
+          </p>
+          <p class="card-text">
+            {{show.startTime | date:'E HH:mm'}}
+            -
+            <ng-container *ngIf="(show.startTime | date:'E') !== (show.endTime | date:'E')"> <!--If weekday is different-->
+              {{show.endTime | date:'E'}}
+            </ng-container>
+            {{show.endTime | date:'E HH:mm'}}
+          </p>
+        </div>
+        <div class="col-md-7">
+          <div class="card-body">
+            <h4 class="card-title">{{show.venue.address.city}} – {{show.venue.name}} </h4>
+            <p class="card-text">{{event.name}}</p>
+          </div>
+        </div>
+        <div class="col-md-2 text-center">
+          <button *ngIf="isAvailable(show.startTime)" type="button" class="btn btn-primary" (click)="createTicket(show)">Buy Ticket</button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<button *ngIf="isAdmin()" type="button" class="btn btn-secondary mb-4" (click)="openShowCreator()">
+  Add Show
+</button>

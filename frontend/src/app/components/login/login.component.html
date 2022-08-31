@@ -1,0 +1,45 @@
+<div class="pt-5">
+  <div class="row">
+    <div class="col-md-6 mx-auto">
+      <span class="anchor" id="formLogin"></span>
+
+      <div class="card rounded-0">
+        <div class="card-header">
+          <h3 class="mb-0">Login</h3>
+        </div>
+
+        <div class="card-body">
+          <form class="form" [formGroup]="loginForm" (ngSubmit)="loginUser()">
+
+            <div class="form-group">
+              <label for="inputUsername">Username</label>
+              <input type="text" name="username" formControlName="username" class="form-control" id="inputUsername"
+                     aria-describedby="usernameHelp" placeholder="Enter username" [class.is-invalid]="isInvalid('loginForm','username')">
+              <div *ngIf="isInvalid('loginForm','username')" class="invalid-feedback">
+                <div *ngIf="loginForm.controls.username.errors.required">This field is required!</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" name="password" formControlName="password" class="form-control" id="password"
+                     placeholder="Password" [class.is-invalid]="isInvalid('loginForm','password')">
+              <div *ngIf="isInvalid('loginForm','password')" class="invalid-feedback">
+                <div *ngIf="loginForm.controls.password.errors.required">This field is required!</div>
+                <div *ngIf="loginForm.controls.password.errors.minlength">
+                  Your password must be at least 8 characters long!
+                </div>
+              </div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <button type="submit" class="btn btn-success">Login</button>
+              <a routerLink="/registration">Create Account</a>
+            </div>
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

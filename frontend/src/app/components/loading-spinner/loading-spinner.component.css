@@ -1,0 +1,17 @@
+
+.container {
+    min-height: 600px;
+    opacity: 0;
+    animation: fadeIn 0.2s linear 0.3s;
+    animation-fill-mode: forwards;
+}
+#ticket {
+    animation: spin 2s ease infinite;
+    transform-origin: 50% 50%;
+    transform: translate3d(0,0,0) rotate(0);
+}
+@keyframes spin {
+    to {
+        transform: translate3d(0,0,0) rotate(360deg);
+    }
+}

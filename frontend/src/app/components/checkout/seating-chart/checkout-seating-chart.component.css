@@ -1,0 +1,8 @@
+.card.active {
+    background-color: aliceblue;
+    border-color: #9ccdf9;
+}
+.sector-color {
+    cursor: default;
+}
+

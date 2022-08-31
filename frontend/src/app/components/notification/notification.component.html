@@ -1,0 +1,8 @@
+<div *ngIf="notifications" class="notification-container">
+    <ngb-alert *ngFor="let notif of notifications; let index = i" [type]="notif.type" (close)="close(index)" class="notification">
+      <ul>
+        <li *ngFor="let message of notif.messages">{{message}}</li>
+      </ul>
+      <small class="form-text text-muted">{{notif.timestamp | date: 'medium'}}</small>
+    </ngb-alert>
+</div>

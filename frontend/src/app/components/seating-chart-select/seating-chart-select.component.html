@@ -1,0 +1,21 @@
+<form [formGroup]="form">
+  <ng-select
+    [addTag]="createSeatingChart"
+    [hideSelected]="true"
+    [minTermLength]="0"
+    typeToSearchText="Please enter 1 or more characters"
+    [items]="seatingCharts | async"
+    [formControlName]="controlName"
+    [searchFn]="seatingChartSearchFn"
+    [searchable]="true"
+  >
+    <ng-template ng-label-tmp ng-option-tmp let-item="item">
+      {{item.name}}
+    </ng-template>
+  </ng-select>
+</form>
+
+
+<ng-template #content let-modal>
+  <app-seatingchart-editor [hall]="getHall()" [seatingChartName]="seatingChartForm.value.name"></app-seatingchart-editor>
+</ng-template>

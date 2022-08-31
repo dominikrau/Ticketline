@@ -1,0 +1,8 @@
+.chart-number {
+    font-weight: bold;
+    font-size: 4.4rem;
+}
+.event-type-badge {
+    background-color: rgba(0,0,0,0.4);
+    backdrop-filter: blur(10px);
+}

@@ -1,0 +1,57 @@
+<form [formGroup]="form">
+  <ng-select [addTag]="openModal"
+             [hideSelected]="true"
+             [typeahead]="hallSearch"
+             [loading]="hallLoading"
+             [minTermLength]="0"
+             typeToSearchText="Please enter 1 or more characters"
+             [items]="halls | async"
+             [formControlName]="controlName"
+  >
+    <ng-template ng-label-tmp ng-option-tmp let-item="item">
+      {{item.name}} [{{item.width}}m &times; {{item.height}}m ]
+    </ng-template>
+  </ng-select>
+</form>
+
+<ng-template #content let-modal>
+  <form class="form" [formGroup]="hallForm" (ngSubmit)="saveHall(modal)">
+    <div class="modal-header">
+      <h5 class="modal-title">Add new Hall for Venue: "{{getVenue().name}}"</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="dismiss(modal)">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" class="form-control" formControlName="name"
+               placeholder="Enter name" [class.is-invalid]="isInvalid('name')">
+        <div *ngIf="isInvalid('name')" class="invalid-feedback">
+          <div *ngIf="hallForm.controls.name.errors.required">Name is required!</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="width">Width</label>
+        <input type="number" name="width" id="width" class="form-control" formControlName="width"
+               placeholder="Enter width in Meter" [class.is-invalid]="isInvalid('width')">
+        <div *ngIf="isInvalid('width')" class="invalid-feedback">
+          <div *ngIf="hallForm.controls.width.errors.required">Width is required!</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="height">Height</label>
+        <input type="number" name="height" id="height" class="form-control" formControlName="height"
+               placeholder="Enter height in Meter" [class.is-invalid]="isInvalid('height')">
+        <div *ngIf="isInvalid('height')" class="invalid-feedback">
+          <div *ngIf="hallForm.controls.height.errors.required">Height is required!</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-primary float-right">Add Hall</button>
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="dismiss(modal)">Close</button>
+    </div>
+  </form>
+</ng-template>

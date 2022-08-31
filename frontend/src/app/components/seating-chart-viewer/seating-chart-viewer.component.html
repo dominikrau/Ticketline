@@ -1,0 +1,105 @@
+<svg fill="none" [attr.width]="hall.width" [attr.height]="hall.height" [attr.viewBox]="getViewBox()" [hall]="hall"
+     xmlns="http://www.w3.org/2000/svg" appSeatingChartInteraction (cursorInformation)="receiveCursorInformation($event)">
+  <defs>
+    <linearGradient gradientUnits="userSpaceOnUse" id="paint0_linear" x1="0" x2="10" y1="10" y2="10">
+      <stop stop-color="#008CDB" offset="0">
+      </stop>
+      <stop offset="0.503314" stop-color="#14A9FF">
+      </stop>
+      <stop offset="1" stop-color="#0089D9">
+      </stop>
+    </linearGradient>
+    <g id="test">
+      <rect fill="#128BD2" height="9" rx="1" width="8" x="1" y="1">
+      </rect>
+      <path
+        d="M0 0.5C0 0.223858 0.223858 0 0.5 0V0C0.776142 0 1 0.223858 1 0.5V9.5C1 9.77614 0.776142 10 0.5 10V10C0.223858 10 0 9.77614 0 9.5V0.5Z"
+        fill="#0FA9FF">
+      </path>
+      <path
+        d="M9 0.5C9 0.223858 9.22386 0 9.5 0V0C9.77614 0 10 0.223858 10 0.5V9.5C10 9.77614 9.77614 10 9.5 10V10C9.22386 10 9 9.77614 9 9.5V0.5Z"
+        fill="#0FA9FF">
+      </path>
+      <path
+        d="M0 9.5C0 9.22386 0.223858 9 0.5 9H9.5C9.77614 9 10 9.22386 10 9.5V9.5C10 9.77614 9.77614 10 9.5 10H0.5C0.223858 10 0 9.77614 0 9.5V9.5Z"
+        fill="url(#paint0_linear)">
+      </path>
+    </g>
+    <g id="seat">
+      <path d="M0 0.0999756H0.1V0.199976H0.9V0.0999756H1V0.999976H0V0.0999756Z" opacity="1">
+      </path>
+        <circle r="0.1" cx="0.5" cy="0.5"></circle>
+      <g style="mix-blend-mode:overlay">
+        <rect fill="black" fill-opacity="0.5" height="0.6" width="0.8" x="0.100098" y="0.199951" style="stroke-width: 0">
+        </rect>
+      </g>
+    </g>
+    <pattern id="smallGrid" width="1" height="1" patternUnits="userSpaceOnUse">
+      <path d="M 8 0 L 0 0 0 8" fill="none" stroke="#ccc" stroke-width="0.05"/>
+    </pattern>
+    <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+      <rect width="10" height="10" fill="url(#smallGrid)"/>
+      <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#999" stroke-width="0.1"/>
+    </pattern>
+    <filter id="greyscale">
+      <feColorMatrix type='matrix' values='0 1 0 0 0
+                                            0 1 0 0 0
+                                            0 1 0 0 0
+                                            0 1 0 1 0 '/>
+    </filter>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#grid)"/>
+
+
+  <ng-container *ngFor="let sector of seatingChart.sectors">
+
+    <g [attr.fill]="sector.color">
+      <ng-container *ngIf="sector.type === 'sitting'">
+        <ng-container *ngFor="let seat of sector.seats">
+          <use href="#seat" [attr.x]="seat.x" [attr.y]="seat.y"
+               [class.selected]="isSeatSelected(seat.id)" [attr.fill]="(seat.available !== null && !seat.available)?'#ccc':''" />
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="sector.type === 'standing'">
+        <rect [attr.x]="sector.x"
+              [attr.y]="sector.y"
+              [attr.width]="sector.width"
+              [attr.height]="sector.height"
+              [attr.fill]="sector.color"
+              [attr.stroke]="sector.color"
+              style="fill-opacity:0.5; stroke-width: 0.1"/>
+        <rect *ngIf="sector.available !== null" [attr.x]="sector.x"
+              [attr.y]="sector.y"
+              [attr.width]="sector.width"
+              [attr.height]="standingSectorUsedHeight(sector)"
+              fill="#ccc"
+              [attr.stroke]="sector.color"
+              style="stroke-width: 0.1"/>
+        <rect *ngIf="sector.available !== null && selected !== undefined" [attr.x]="sector.x"
+              [attr.y]="sector.y + standingSectorUsedHeight(sector)"
+              [attr.width]="sector.width"
+              [attr.height]="selectedSectorUsedHeight(sector)"
+              [attr.fill]="sector.color"
+              [attr.stroke]="sector.color"
+              style="stroke-width: 0.1; fill-opacity: 1"/>
+      </ng-container>
+
+    </g>
+
+  </ng-container>
+
+  <g id="selected"></g>
+  <g id="stage" *ngIf="seatingChart.stage">
+
+
+    <rect [attr.x]="seatingChart.stage.x"
+          [attr.y]="seatingChart.stage.y"
+          [attr.width]="seatingChart.stage.width"
+          [attr.height]="seatingChart.stage.height"
+          fill="#fff"
+          style="stroke-width: 0.1"/>
+    <text
+      [attr.x]="seatingChart.stage.x + seatingChart.stage.width / 2"
+      [attr.y]="seatingChart.stage.y + seatingChart.stage.height / 2">Stage</text>
+  </g>
+</svg>

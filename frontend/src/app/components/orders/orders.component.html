@@ -1,0 +1,38 @@
+<div class="container">
+  <h2 class="my-4">Orders Overview</h2>
+  <app-loading-spinner *ngIf="!orders" text="Orders"></app-loading-spinner>
+  <div *ngIf="orders">
+    <div class="card mb-3" *ngFor="let order of orders.content" aria-describedby="orders">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-9">
+            <h5 class="card-title">{{order.show.event.name}}</h5>
+            <p class="card-text">Order placed on {{order.createdAt|date:'EEEE, dd.MM.yyyy'}}</p>
+            <p class="card-text">{{order.show.venue.name}}, {{order.show.venue.address.city}}, {{order.show.venue.address.country}}</p>
+            <p *ngIf="order.paymentMethod === 'RESERVATION'">Reservation - Please pick up tickets 30 minutes before the show starts!</p>
+            <p *ngIf="order.paymentMethod !== 'RESERVATION'"><span>Payment Method: {{getNeatPaymentMethod(order.paymentMethod)}}</span></p>
+            <span *ngIf="order.paymentMethod === 'RESERVATION'">
+              <button type="button" class="btn btn-primary mr-2" (click)="buyReserved(order.show, order)">Purchase Tickets</button>
+            </span>
+            <button type="button" class="btn btn-secondary" (click)="toggleActiveOrder(order.orderId)"
+                    [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+              {{(order.orderId === activeOrderId) ? "Hide" : "Show" }} Tickets
+            </button>
+          </div>
+          <div class="col-md-3 d-flex align-items-center flex-column justify-content-center">
+            <button *ngIf="order.paymentMethod !== 'RESERVATION'" class="btn btn-primary btn-block my-2" (click)="printTicket(order.orderId)">Print tickets</button>
+            <button class="btn btn-secondary btn-block my-2" (click)="printReceipt(order.orderId)">Print receipt</button>
+          </div>
+        </div>
+        <div class="row">
+          <app-order-details class="col-md" *ngIf="activeOrderId === order.orderId" [activeOrder]="activeOrderId" [orderId]="order.orderId"></app-order-details>
+        </div>
+      </div>
+    </div>
+    <ngb-pagination *ngIf="orders.content.length" [page]="pageNumber" (pageChange)="changePage($event)" [collectionSize]="orders.total"
+                    [pageSize]="pageSize" class="float-right" [maxSize]="5" [rotate]="true"></ngb-pagination>
+  </div>
+
+</div>
+
+

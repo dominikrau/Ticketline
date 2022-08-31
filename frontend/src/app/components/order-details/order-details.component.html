@@ -1,0 +1,36 @@
+<ng-container *ngIf="orderId === activeOrder">
+  <app-loading-spinner *ngIf="!tickets" text="Tickets"></app-loading-spinner>
+  <div *ngFor="let ticket of tickets" aria-describedby="orders">
+
+    <div class="d-flex flex-row justify-content-between align-items-center border my-3"
+         [class.alert-danger]="ticket.status === 'CANCELLED'">
+      <div>
+        <h5 class="m-3">{{ticket.show.event.name}}</h5>
+        <p class="mx-3 mb-0">{{ticket.show.startTime |date:'EEEE, dd.MM.yyyy,  HH:mm'}}</p>
+        <p class="mx-3">{{ticket.show.venue.address.country}}, {{ticket.show.venue.name}}</p>
+        <div *ngIf="ticket.sector.type === 'standing'">
+          <p class="mx-3 mb-1">Standing Ticket</p>
+        </div>
+        <div *ngIf="ticket.sector.type === 'sitting'">
+          <p class="mx-3 mb-1">Row: {{ticket.seat.y}}, Seat: {{ticket.seat.x}}</p>
+        </div>
+        <p class="mx-3"> {{ ticket.price |currency: 'EUR'}}</p>
+      </div>
+      <div>
+        <div class="d-flex flex-column justify-content-around mx-5" *ngIf="ticket.status !== 'CANCELLED'">
+          <button *ngIf="isAvailable(ticket.show.startTime)" class="btn btn-danger btn-block my-2" (click)="cancelTicket(ticket.ticketId)">Cancel ticket</button>
+        </div>
+        <div *ngIf="ticket.status === 'CANCELLED'" class="mx-5">
+          <p style="text-align: end">Ticket cancelled</p>
+          <button class="btn btn-secondary btn-block my-2" (click)="printCancellationInvoice(ticket.ticketId)">Print Cancellation Invoice</button>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</ng-container>
+
+
+

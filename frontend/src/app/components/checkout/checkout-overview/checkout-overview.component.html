@@ -1,0 +1,16 @@
+<div class="card" *ngIf="tickets">
+  <div class="card-body">
+    <h5 class="card-title">Overview</h5>
+    <ng-container *ngFor="let ticket of tickets">
+      <h6 class="card-subtitle">{{show.event.name}}</h6>
+      <div class="card-text text-muted">
+        <p class="mb-0">{{show.venue.address.city}}, {{show.venue.name}}, {{show.seatingChart.hall.name}}</p>
+        <p class="mb-0">{{show.startTime | date: 'EEEE, dd.MM.yyyy,  HH:mm'}}</p>
+        <p class="mb-0">Category: {{ticket.sector.name}}</p>
+        <p *ngIf="ticket.sector.type === 'sitting'">{{getNeatSeatById(ticket.seat, ticket.sector.id)}}</p>
+        <p *ngIf="ticket.sector.type === 'standing'">Standing Ticket </p>
+      </div>
+    </ng-container>
+    <p class="my-3 d-flex justify-content-between align-items-baseline">Total: <strong>{{ calculatePrice() | currency }}</strong></p>
+  </div>
+</div>

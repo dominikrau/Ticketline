@@ -1,0 +1,5 @@
+.user-card {
+    background-color: aliceblue;
+    margin-top: -3px;
+    animation: fadeIn 0.3s linear;
+}

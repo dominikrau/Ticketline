@@ -1,0 +1,12 @@
+
+  <div class="form-group" *ngIf="formGroup" [formGroup]="formGroup">
+    <!--suppress XmlInvalidId -->
+    <label for="inputEventType">Event Type</label>
+    <ng-select appearance="outline" labelForId="inputEventType" formControlName="{{controlName}}"
+                [class.is-invalid]="isInvalid()">
+      <ng-option *ngFor="let eventType of eventTypes" value="{{eventType.value}}">{{eventType.displayName}}</ng-option>
+    </ng-select>
+    <div *ngIf="isInvalid()" class="invalid-feedback">
+      <div *ngIf="formGroup.controls[controlName].errors.required">Event Type is required!</div>
+    </div>
+  </div>

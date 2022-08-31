@@ -1,0 +1,32 @@
+:host {
+    display: block;
+    position: sticky;
+    top: 0;
+    z-index: 1100;
+}
+.notification-container {
+    height: auto;
+    transition: height 0.5s ease-out;
+}
+.notification {
+    animation: fadeIn 0.2s ease-out, slideUp 0.3s ease-out 3s;
+    animation-fill-mode: forwards;
+}
+@keyframes slideUp {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+}
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}

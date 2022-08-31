@@ -1,0 +1,27 @@
+<div class="jumbotron mt-5">
+  <h1 class="display-4 my-4">Top 10 Events</h1>
+  <form class="form-row align-items-md-end" [formGroup]="topTenForm" (ngSubmit)="getTopTen()">
+    <div class="col-md-4">
+      <app-event-type-select [formGroup]="topTenForm" [controlName]="'eventType'"></app-event-type-select>
+    </div>
+    <div class="col-md-4 form-group">
+      <label for="inputMonth">Month</label>
+      <input type="month" name="inputMonth" id="inputMonth" formControlName="month" class="form-control">
+    </div>
+    <div class="col-md-2 align-items-md-end form-group">
+      <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+  </form>
+  <hr class="my-4">
+  <app-loading-spinner *ngIf="!events" text="events"></app-loading-spinner>
+  <div class="row" *ngIf="events">
+
+    <div class="col-md-6" *ngFor="let half of slicedEvents().events">
+      <ng-container *ngFor="let event of half; index as i">
+        <app-home-event-card (click)="eventDetails(event.event)" [event]="event.event" [index]="event.index"></app-home-event-card>
+      </ng-container>
+    </div>
+
+  </div>
+
+</div>

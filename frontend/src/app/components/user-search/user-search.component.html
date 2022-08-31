@@ -1,0 +1,55 @@
+<h1 class="h2 my-4">Manage Users</h1>
+
+<div class="row">
+  <div class="col col-md-3">
+    <h3 class="h5">Create New User</h3>
+    <p>
+      <button class="btn btn-success btn-block" (click)="openModal()">Create User</button>
+    </p>
+    <h3 class="h5">Search</h3>
+    <form class="form" [formGroup]="searchForm" (ngSubmit)="changePage(1)">
+      <div class="form-group">
+        <label for="inputUserFirstName">User First Name</label>
+        <input type="text" id="inputUserFirstName" formControlName="firstName" class="form-control"
+               placeholder="Enter first name of user">
+      </div>
+      <div class="form-group">
+        <label for="inputUserLastName">User Second Name</label>
+        <input type="text" name="inputUserLastName" id="inputUserLastName" formControlName="lastName" class="form-control"
+               placeholder="Enter last name of user">
+      </div>
+      <div class="form-group">
+        <label for="inputBlocked">Blocked</label>
+        <select name="inputBlocked" id="inputBlocked" formControlName="blocked" class="form-control">
+          <option selected value="false">Not Blocked</option>
+          <option value="true">Blocked</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block mb-4">Search</button>
+    </form>
+  </div>
+  <div class="col col-md-9">
+    <app-loading-spinner *ngIf="!results" text="users"></app-loading-spinner>
+    <ng-container *ngIf="results">
+      <div *ngFor="let user of results.content" class="mb-3">
+        <div class="card hover-shadow" (click)="setCurrentUser(user)">
+          <div class="row no-gutters">
+            <div class="col-md-9">
+              <div class="card-body">
+                <h5 class="card-title">{{user.firstName}} {{user.lastName}}</h5>
+                <p class="card-text" *ngIf="isUserAdmin(user)">Admin</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <app-admin-show-user *ngIf="currentUser === user" [user]="user"></app-admin-show-user>
+      </div>
+      <ngb-pagination *ngIf="results.content.length" [page]="pageNumber" (pageChange)="changePage($event)" [collectionSize]="results.total"
+                      [pageSize]="pageSize" class="float-right" [maxSize]="5" [rotate]="true"></ngb-pagination>
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #content let-modal>
+  <app-admin-create-user [modal]="modal"></app-admin-create-user>
+</ng-template>

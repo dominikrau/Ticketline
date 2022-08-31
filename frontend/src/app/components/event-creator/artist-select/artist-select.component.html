@@ -1,0 +1,59 @@
+<form [formGroup]="form">
+  <ng-select [addTag]="openModal"
+             [multiple]="true"
+             [hideSelected]="true"
+             [typeahead]="artistSearch"
+             [loading]="artistLoading"
+             [minTermLength]="2"
+             typeToSearchText="Please enter 2 or more characters"
+             [items]="artists | async"
+             [formControlName]="controlName"
+             [labelForId]="controlName"
+  >
+    <ng-template ng-label-tmp ng-option-tmp let-item="item">
+      {{item.firstName}} {{item.lastName}} [{{item.pseudonym}}]
+    </ng-template>
+  </ng-select>
+</form>
+
+<ng-template #content let-modal>
+  <form class="form" [formGroup]="artistForm" (ngSubmit)="saveArtist(modal)">
+    <div class="modal-header">
+      <h5 class="modal-title">Add new Artist</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="dismiss(modal)">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="firstName">First name</label>
+        <input type="text" name="firstName" id="firstName" class="form-control" formControlName="firstName"
+               placeholder="Enter first name" [class.is-invalid]="isInvalid('firstName')">
+        <div *ngIf="isInvalid('firstName')" class="invalid-feedback">
+          <div *ngIf="artistForm.controls.firstName.errors.required">First name is required!</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="lastName">Last name</label>
+        <input type="text" name="lastName" id="lastName" class="form-control" formControlName="lastName"
+               placeholder="Enter last name" [class.is-invalid]="isInvalid('lastName')">
+        <div *ngIf="isInvalid('lastName')" class="invalid-feedback">
+          <div *ngIf="artistForm.controls.lastName.errors.required">Last name is required!</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="pseudonym">Pseudonym</label>
+        <input type="text" name="pseudonym" id="pseudonym" class="form-control" formControlName="pseudonym"
+               placeholder="Enter pseudonym" [class.is-invalid]="isInvalid('pseudonym')">
+        <div *ngIf="isInvalid('pseudonym')" class="invalid-feedback">
+          <div *ngIf="artistForm.controls.pseudonym.errors.required">Pseudonym is required!</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-primary float-right">Add artist</button>
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="dismiss(modal)">Close</button>
+    </div>
+  </form>
+</ng-template>

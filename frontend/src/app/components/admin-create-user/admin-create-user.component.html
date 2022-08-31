@@ -1,0 +1,139 @@
+<div class="modal-header">
+  <h5 class="modal-title">Create a new Account </h5>
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+
+  <form class="form" *ngIf="form" [formGroup]="form" (ngSubmit)="registerUserAsAdmin()">
+
+    <div class="modal-body">
+    <div class="row">
+      <div class="form-group col-md-4">
+        <label for="inputFirstName">First Name</label>
+        <input type="text" name="firstName" id="inputFirstName" formControlName="firstName" class="form-control"
+               placeholder="Enter first Name"
+               [ngClass]="{'is-invalid': isInvalid('firstName')}" required>
+        <div *ngIf="isInvalid('firstName')" class="invalid-feedback">
+          <div *ngIf="form.controls.firstName.errors.required">First Name is required!</div>
+        </div>
+      </div>
+      <div class="form-group col-md-5">
+        <label for="inputLastName">Last Name</label>
+        <input type="text" name="lastName" id="inputLastName" formControlName="lastName" class="form-control"
+               placeholder="Enter last Name"
+               [ngClass]="{'is-invalid': isInvalid('lastName')}" required>
+        <div *ngIf="isInvalid('lastName')" class="invalid-feedback">
+          <div *ngIf="form.controls.lastName.errors.required">Last Name is required!</div>
+        </div>
+      </div>
+      <div class="form-group col-md-3">
+        <!--suppress XmlInvalidId -->
+        <label for="inputGender">Gender</label>
+        <ng-select appearance="outline" [clearable]="false" labelForId="inputGender" formControlName="gender"
+                   [ngClass]="{'is-invalid': isInvalid('gender')}" required>
+          <ng-option value="M">Male</ng-option>
+          <ng-option value="F">Female</ng-option>
+          <ng-option value="O">Other</ng-option>
+        </ng-select>
+        <div *ngIf="isInvalid('gender')" class="invalid-feedback">
+          <div *ngIf="form.controls.gender.errors.required">Gender is required!</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="inputEmailAddress">Email Address</label>
+      <input type="text" name="emailAddress" id="inputEmailAddress" formControlName="emailAddress"
+             class="form-control" placeholder="Enter Email Address"
+             [ngClass]="{'is-invalid': isInvalid('emailAddress')}" required>
+      <div *ngIf="isInvalid('emailAddress')" class="invalid-feedback">
+        <div *ngIf="form.controls.emailAddress.errors.required">Email Address is required!</div>
+        <div *ngIf="form.controls.emailAddress.errors.email||form.controls.emailAddress.errors.pattern">Please provide a valid Email
+          Address!
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="inputPassword">Password</label>
+      <input type="password" name="password" id="inputPassword" formControlName="password"
+             class="form-control" placeholder="Enter password"
+             [ngClass]="{'is-invalid': isInvalid('password')}" required>
+      <div *ngIf="isInvalid('password')" class="invalid-feedback">
+        <div *ngIf="form.controls.password.errors.required">Password is required!</div>
+        <div *ngIf="form.controls.password.errors.minlength">Password must be at least 8 characters long!</div>
+        <div *ngIf="form.controls.password.errors.pattern">Password has to contain at least one number and one letter!</div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="inputConfirmPassword">Confirm Password</label>
+      <input type="password" name="confirmPassword" id="inputConfirmPassword" formControlName="confirmPassword"
+             class="form-control" placeholder="Confirm Password"
+             [ngClass]="{'is-invalid': isInvalid('confirmPassword')}" required>
+      <div *ngIf="isInvalid('confirmPassword')" class="invalid-feedback">
+        <div *ngIf="form.controls.confirmPassword.errors.required">Password is required!</div>
+        <div *ngIf="form.controls.confirmPassword.errors.minlength">Password must be at least 8 characters long!</div>
+        <div *ngIf="form.controls.confirmPassword.errors.pattern">Password has to contain at least one number and one letter!</div>
+        <div *ngIf="f.confirmPassword.errors.mustMatch">Passwords must match</div>
+      </div>
+    </div>
+
+    <app-address-fields [formGroup]="form" [groupName]="'address'"></app-address-fields>
+
+    <div class="form-group">
+      <label for="dateOfBirthInput">Birthdate</label>
+      <div class="input-group">
+        <div class="input-group-prepend cursor-pointer" (click)="d.toggle()">
+          <div class="input-group-text" id="inputGroupPrepend3">
+            <svg class="bi bi-calendar" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd"
+                    d="M14 0H2a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V2a2 2 0 00-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"
+                    clip-rule="evenodd"/>
+              <path fill-rule="evenodd"
+                    d="M6.5 7a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm-9 3a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm-9 3a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2zm3 0a1 1 0 100-2 1 1 0 000 2z"
+                    clip-rule="evenodd"/>
+            </svg>
+          </div>
+        </div>
+        <input
+          ngbDatepicker
+          type="text"
+          class="form-control"
+          id="dateOfBirthInput"
+          placeholder="DD.MM.YYYY"
+          formControlName="dateOfBirth"
+          #d="ngbDatepicker"
+          [ngClass]="{'is-invalid': isInvalid('dateOfBirth')}"
+          [maxDate]="getMinAge()"
+          [minDate]="{year: 1900, month: 1, day: 1}"
+          required>
+        <div *ngIf="isInvalid('dateOfBirth')" class="invalid-feedback">
+          <div *ngIf="form.controls.dateOfBirth.errors.required">This field is required!</div>
+          <div *ngIf="form.controls.dateOfBirth.errors.ngbDate?.minDate">You cannot possibly be that old!</div>
+          <div *ngIf="form.controls.dateOfBirth.errors.ngbDate?.maxDate">You are too young!</div>
+          <div *ngIf="form.controls.dateOfBirth.errors.ngbDate?.invalid">The date is invalid!</div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputRoles">Role</label>
+      <ng-select id="inputRoles" appearance="outline" [clearable]="false" labelForId="inputRoles" formControlName="roles"
+                 [ngClass]="{'is-invalid': isInvalid('roles')}" required>
+        <ng-option value="ROLE_ADMIN">Admin</ng-option>
+        <ng-option value="ROLE_USER">Customer</ng-option>
+      </ng-select>
+      <div *ngIf="isInvalid('roles')" class="invalid-feedback">
+        <div *ngIf="form.controls.roles.errors.required">Role is required!</div>
+      </div>
+    </div>
+</div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="dismiss()">Close</button>
+      <button type="submit" class="btn btn-success float-right">Create User</button>
+    </div>
+  </form>
+

@@ -1,0 +1,186 @@
+<div class="row" *ngIf="hall" >
+
+  <div class="col-md-8 my-4">
+
+    <svg fill="none" [attr.width]="hall.width" [attr.height]="hall.height" [attr.viewBox]="getViewBox()" [hall]="hall"
+         xmlns="http://www.w3.org/2000/svg" appSeatingChartInteraction (cursorInformation)="receiveCursorInformation($event)">
+      <defs>
+        <linearGradient gradientUnits="userSpaceOnUse" id="paint0_linear" x1="0" x2="10" y1="10" y2="10">
+          <stop stop-color="#008CDB" offset="0">
+          </stop>
+          <stop offset="0.503314" stop-color="#14A9FF">
+          </stop>
+          <stop offset="1" stop-color="#0089D9">
+          </stop>
+        </linearGradient>
+        <g id="test">
+          <rect fill="#128BD2" height="9" rx="1" width="8" x="1" y="1">
+          </rect>
+          <path
+            d="M0 0.5C0 0.223858 0.223858 0 0.5 0V0C0.776142 0 1 0.223858 1 0.5V9.5C1 9.77614 0.776142 10 0.5 10V10C0.223858 10 0 9.77614 0 9.5V0.5Z"
+            fill="#0FA9FF">
+          </path>
+          <path
+            d="M9 0.5C9 0.223858 9.22386 0 9.5 0V0C9.77614 0 10 0.223858 10 0.5V9.5C10 9.77614 9.77614 10 9.5 10V10C9.22386 10 9 9.77614 9 9.5V0.5Z"
+            fill="#0FA9FF">
+          </path>
+          <path
+            d="M0 9.5C0 9.22386 0.223858 9 0.5 9H9.5C9.77614 9 10 9.22386 10 9.5V9.5C10 9.77614 9.77614 10 9.5 10H0.5C0.223858 10 0 9.77614 0 9.5V9.5Z"
+            fill="url(#paint0_linear)">
+          </path>
+        </g>
+        <g id="seat">
+          <path d="M0 0.0999756H0.1V0.199976H0.9V0.0999756H1V0.999976H0V0.0999756Z" opacity="1">
+          </path>
+          <g style="mix-blend-mode:overlay">
+            <rect fill="black" fill-opacity="0.5" height="0.6" width="0.8" x="0.100098" y="0.199951">
+            </rect>
+          </g>
+        </g>
+        <pattern id="smallGrid" width="1" height="1" patternUnits="userSpaceOnUse">
+          <path d="M 8 0 L 0 0 0 8" fill="none" stroke="#ccc" stroke-width="0.05"/>
+        </pattern>
+        <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+          <rect width="10" height="10" fill="url(#smallGrid)"/>
+          <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#999" stroke-width="0.1"/>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid)"/>
+
+
+      <ng-container *ngFor="let sector of sectors">
+
+        <g [attr.fill]="sector.color">
+          <ng-container *ngIf="sector.type === 'sitting'">
+            <ng-container *ngFor="let seat of sector.seats">
+              <use href="#seat" [attr.x]="seat.x" [attr.y]="seat.y"/>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngIf="sector.type === 'standing'">
+            <rect [attr.x]="sector.x"
+                  [attr.y]="sector.y"
+                  [attr.width]="sector.width"
+                  [attr.height]="sector.height"
+                  [attr.fill]="sector.color"
+                  [attr.stroke]="sector.color"
+                  style="fill-opacity:0.5; stroke-width: 0.1"/>
+          </ng-container>
+
+        </g>
+
+      </ng-container>
+
+
+      <g id="active" *ngIf="current.sector" [attr.fill]="current.sector.color">
+        <ng-container *ngIf="current.deleteMode">
+          <rect [attr.x]="(bounds.x1 < bounds.x2)?bounds.x1:bounds.x2"
+                [attr.y]="(bounds.y1 < bounds.y2)?bounds.y1:bounds.y2"
+                [attr.width]="(bounds.x1 < bounds.x2)?bounds.x2 - bounds.x1 + 1:bounds.x1 - bounds.x2 + 1"
+                [attr.height]="(bounds.y1 < bounds.y2)?bounds.y2 - bounds.y1 + 1:bounds.y1 - bounds.y2 + 1"
+                style="fill:red;fill-opacity:0.5; stroke-width: 0.1; stroke: red"/>
+        </ng-container>
+        <ng-container *ngIf="!current.deleteMode">
+          <ng-container *ngIf="current.sector.type === 'sitting'">
+            <ng-container *ngFor="let seat of current.seats">
+              <use href="#seat" [attr.x]="seat.x" [attr.y]="seat.y"/>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngIf="current.sector.type === 'standing'">
+            <rect [attr.x]="current.x"
+                  [attr.y]="current.y"
+                  [attr.width]="current.width"
+                  [attr.height]="current.height"
+                  [attr.fill]="current.sector.color"
+                  [attr.stroke]="current.sector.color"
+                  style="fill-opacity:0.5; stroke-width: 0.1"/>
+          </ng-container>
+        </ng-container>
+      </g>
+      <g id="selected"></g>
+      <g id="stage" *ngIf="seatingChartForm.get('stage').value" [class.active]="current.stage">
+
+
+        <rect [attr.x]="seatingChartForm.get('stage').value.x"
+              [attr.y]="seatingChartForm.get('stage').value.y"
+              [attr.width]="seatingChartForm.get('stage').value.width"
+              [attr.height]="seatingChartForm.get('stage').value.height"
+              fill="#fff"
+              style="stroke-width: 0.1"/>
+        <text
+          [attr.x]="seatingChartForm.get('stage').value.x + seatingChartForm.get('stage').value.width / 2"
+          [attr.y]="seatingChartForm.get('stage').value.y + seatingChartForm.get('stage').value.height / 2">Stage
+        </text>
+        <rect [attr.x]="seatingChartForm.get('stage').value.x + seatingChartForm.get('stage').value.width -2" [attr.y]="seatingChartForm.get('stage').value.y + seatingChartForm.get('stage').value.height -2"
+              width="2" height="2" stroke="black" stroke-width="0.1" fill="#fff" class="resize"/>
+      </g>
+    </svg>
+
+  </div>
+  <div class="col-md-4 sector-container my-3">
+    <form [formGroup]="seatingChartForm" (ngSubmit)="save()">
+      <div>
+        <div>
+          <div class="form-group">
+            <label for="name">Seating Chart Name:</label>
+            <input id="name" type="text" formControlName="name" placeholder="Name" class="form-control">
+          </div>
+          <p>total capacity: <strong>{{ capacity() }}</strong></p>
+        </div>
+        <ng-container formArrayName="sectors">
+          <ng-container *ngFor="let sector of seatingChartForm.get('sectors')['controls']; index as i">
+            <div *ngIf="sector" class="card d-flex flex-row my-2" (click)="setCurrentSector(i)"
+                 [class.active]="i === current.sectorIndex" [formGroup]="sector">
+              <div class="sector-color ml-3"
+                   [style.background-color]="sector.value.color"
+                   [class.active]="sector === current.sector"
+              ></div>
+
+              <div class="card-body">
+                <div class="form-group">
+                  <input type="text" formControlName="name" placeholder="Sector Name" class="form-control"
+                         [class.is-invalid]="isInvalid(sector.controls.name)" aria-label="Sector name">
+                  <div *ngIf="isInvalid(sector.controls.name)" class="invalid-feedback">
+                    <div *ngIf="sector.controls.name.errors.required">Sector name is required!</div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <select formControlName="type" class="form-control" aria-label="sector type">
+                    <option value="sitting">Sitting</option>
+                    <option value="standing">Standing</option>
+                  </select>
+                </div>
+
+                <div *ngIf="sector.value.type === 'sitting' && isInvalid(sector.get('seats'))" class="invalid-feedback d-block form-group">
+                  <div *ngIf="sector.get('seats').errors.required">Please add at least one seat!</div>
+                </div>
+
+                <div class="form-group" *ngIf="sector.value.type === 'standing'">
+                  <input type="number" formControlName="capacity" placeholder="Capacity" class="form-control"
+                         [class.is-invalid]="isInvalid(sector.get('capacity'))"
+                         aria-label="sector capacity" min="0">
+                  <div *ngIf="isInvalid(sector.get('capacity'))" class="invalid-feedback">
+                    <div *ngIf="sector.get('capacity').errors.required">Sector capacity is required!</div>
+                    <div *ngIf="sector.get('capacity').errors.min">Sector capacity cannot be negative!</div>
+                  </div>
+                </div>
+                <div class="btn-group" role="group" aria-label="Basic example">
+
+                  <button type="button" class="btn btn-danger btn-sm"
+                          (click)="confirmDeleteSector(i)" [disabled]="sectors.length <= 1">
+                    delete Sector
+                  </button>
+
+                  <label class="btn btn-secondary change-color" [style.background-color]="sector.color"><span>change Color</span><input
+                     type="color" formControlName="color"></label>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </ng-container>
+      </div>
+      <button type="button" class="btn btn-primary btn-block mt-3" (click)="addSector()">Add Sector</button>
+      <button type="button" class="btn btn-success btn-block mb-2" (click)="save()">Save Seating Chart</button>
+    </form>
+  </div>
+</div>
